@@ -21,14 +21,16 @@
 -git branch <nombre> -> Crea una branch en el commit actual.
 -git branch -D <nombre> -> Borra la branch dada por <nombre>.
 -git checkout <nombrerama> -> Lleva el HEAD a la rama dada por <nombrerama>. La rama se actualizará a cualquier nuevo commit.
--git checkout --detach <nombrerama> -> Lleva el HEAD al ultimo commit de la rama dada por <nombrerama>. La rama NO se actualizará a cualquier nuevo commit, este irá a partir del anterior.
+-git checkout --detach <nombrerama> -> Lleva el HEAD al ultimo commit de la rama dada por <nombrerama>. La rama NO se actualizará a cualquier nuevo commit, 
+				       este irá a partir del anterior.
 -git reset --hard <idcommit> -> Mueve la rama en la que se está hacia el commit dado por <idcommit>.
 
 
 4. Merge:
 
--git merge <idcommit> -> Crea un nuevo commit desde el actual en el que se combina el commit actual y el dado por <idcommit>. Puede ocasionar conflictos cuando ambos commits tienen algo 
-	  	         diferente en lugar común. Se permite al usuario corregir esto guardando una de las dos versiones o haciendo una combinación de ellas de forma manual.
+-git merge <idcommit> -> Crea un nuevo commit desde el actual en el que se combina el commit actual y el dado por <idcommit>. Puede ocasionar conflictos 
+cuando ambos commits tienen algo diferente en lugar común. Se permite al usuario corregir esto guardando una de las dos versiones o haciendo una combinación de 
+ellas de forma manual.
 
 
 5. Index:
