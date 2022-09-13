@@ -1,0 +1,92 @@
+----------------------------------------------------------------------------------------------- NOTAS JUEGO OH MY GIT -------------------------------------------------------------------------------------
+
+
+1. Intro:
+
+-git init -> Inicializa un repositorio.
+-git add . -> Añade los ficheros del directorio actual para el siguiente commit.
+-git commit -m "Mensaje" -> Hace un commit con el mensaje dado.
+-git pull -> Trae la versión de la timeline actual de otra persona e intenta hacer un merge.
+-git push -> Envia la timeline actual hacia otra persona.
+
+
+2. Files: Muestra como crear y borrar ficheros con touch y rm.
+
+
+3. Branches:
+
+-git checkout <idcommit> -> Cambia el puntero (denominado HEAD) hacia el commit concreto dado por <idcommit>.
+-git checkout HEAD^ -> Ir al commit previo al actual.
+-git checkout HEAD~2 -> Ir 2  commits previos al actual.
+-git branch <nombre> -> Crea una branch en el commit actual.
+-git branch -D <nombre> -> Borra la branch dada por <nombre>.
+-git checkout <nombrerama> -> Lleva el HEAD a la rama dada por <nombrerama>. La rama se actualizará a cualquier nuevo commit.
+-git checkout --detach <nombrerama> -> Lleva el HEAD al ultimo commit de la rama dada por <nombrerama>. La rama NO se actualizará a cualquier nuevo commit, este irá a partir del anterior.
+-git reset --hard <idcommit> -> Mueve la rama en la que se está hacia el commit dado por <idcommit>.
+
+
+4. Merge:
+
+-git merge <idcommit> -> Crea un nuevo commit desde el actual en el que se combina el commit actual y el dado por <idcommit>. Puede ocasionar conflictos cuando ambos commits tienen algo 
+	  	         diferente en lugar común. Se permite al usuario corregir esto guardando una de las dos versiones o haciendo una combinación de ellas de forma manual.
+
+
+5. Index:
+
+
+-git add <nombrefile> -> Añade el fichero dado para el siguiente commit.
+-git reset <nombrefile> -> Resetea la versión del índice del fichero dado a la versión del commit en el que se está.
+
+
+6. Remotes: Profundiza en los git push y git pull
+
+
+7. Changing-the-past:
+
+-git rebase <idcommit> -> Pone los eventos del actual timeline como más recientes a partir del commit dado.
+-git rebase -i <idcommit> -> Se abre un editor de cambios de los eventos en el timeline actual en la situación del commit dado por <idcommit> y se realiza un rebase.
+-git cherry-pick <idcommit> -> Permite reordenamientos individuales partiendo del commit dado por <idcommit> desde donde se encuentra la branch.
+
+
+8. Shit-Happens:
+
+-git checkout <idcommit> <fichero> -> Restaurar un fichero concreto de un commit.
+-git reset <idcommit> -> Permite deshacer un commit devolviendo la branch actual hacia el commit dado por <idcommit> y reseteando el índice a ese commit.
+-git revert <idcommit> -> Hace un nuevo commit que revierte los cambios del commit dado. Mejor opción cuando se ha hecho push.
+-git reflog -> Permite ver un log de los commits donde ha estado el puntero HEAD.
+
+
+9. Workflows:
+
+-git clone <remote> -> Crea una copia del repositorio ubicado en <remote>.
+
+
+10. Bisect: Método de búsqueda de la bisección
+
+-git bisect start -> Comienza la búsqueda del commit donde ha ocurrido algo no deseado.
+-git bisect good -> Marca el commit actual como bueno a modo de límite de la búsqueda.
+-git bisect bad -> Marca el commit actual como malo a modo de límite de la búsqueda.
+
+
+11. Stash: "Reserva" temporal de cambios
+
+-git stash push -> Mete cambios en la pila de reserva.
+-git stash pop -> Sacar cambios de la pila de reserva aplicándolos al directorio de trabajo eliminando estos cambios de la pila.
+-git stash apply -> Sacar cambios de la pila de reserva aplicándolos al directorio de trabajo manteniendo estos cambios en la pila.
+-git stash list -> Lista la pila del stash.
+-git stash clear -> Limpiar la pila del stash.
+-git stash drop <stash> -> Descartar una entrada concreta del stash.
+-git stash branch <nombrerama> <stash> -> Crear una nueva rama en el stash.
+
+
+12. Tags:
+
+-git tag <etiqueta> -> Marcar con etiqueta un commit.
+-git tag -d <etiqueta> -> Eliminar la etiqueta dada.
+-git tag <etiqueta> <idcommit> -> Marcar con etiqueta el commit dado.
+-git push <remote> <etiqueta> -> Push de una etiqueta dada.
+-git push <remote> --tags -> Push de todas las etiquetas.
+-git push <remote> --delete <etiqueta> -> Borrar del remoto una etiqueta dada.
+-git fetch <remote> --prune --prune-tags -> Sincronizar etiquetas.
+
+
