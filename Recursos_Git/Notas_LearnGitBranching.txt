@@ -1,0 +1,184 @@
+-------------------------------------------------------------------------------------- NOTAS LEARNGITBRANCHING --------------------------------------------------------------------------------------------
+
+
+-URL -> https://learngitbranching.js.org/
+
+1. Secuencia Introductoria:
+
+
+	-Commit: Un commit en un repositorio git registra un snapshot de todos los archivos en el directorio local. Git pretende mantener los commits tan livianos como sea posible, por lo que no copia 
+		 ciegamente el directorio completo cada vez que se realiza un commit. Puede (cuando es posible) comprimir un commit como un conjunto de cambios (o un "delta") entre una versión del 
+		 repositorio y la siguiente. Git mantiene, también, un historial de qué commits se hicieron y cuándo. Es por eso que la mayoría de los commits tienen commits ancestros encima.
+
+
+	-Ramas: Las ramas (branches) en Git son increíblemente livianas. Son sólo referencias a un commit específico. Por esto es que tantos entusiastas de Git siguen el mantra: 
+		crea ramas al principio y hazlo también de manera frecuente. Como no hay consumo extra de almacenamiento ni memoria al crear varias ramas, lógicamente es más fácil dividir el trabajo que 
+		trabajar solamente con un par de ramas grandes.
+
+
+	-Merge de ramas: Modo de unificar el trabajo de dos ramas diferentes. Esto permite abrir una nueva rama de desarrollo, implementar alguna nueva funcionalidad, y después unirla de nuevo con el 
+		         trabajo principal. El primer método para combinarlas es git merge. Hacer merge en Git crea un commit especial que tiene dos padres diferentes. Un commit con dos padres 
+			 escencialmente significa "Quiero incluir todo el trabajo de estos dos padres , y del conjunto de todos sus ancestros".
+
+
+	-Git rebase: El segundo modo de combinar el trabajo de distintas ramas es el rebase. Hacer rebase escencialmente selecciona un conjunto de commits, los "copia", y los aplica en algún otro lado. 
+		     Aunque esto pueda sonar confuso, la ventaja de hacer rebase es que puede usarse para conseguir una secuencia de commits lineal, más bonita. El historial / log de commits del repositorio 
+		     va a estar mucho más claro si sólo usas rebase.
+
+
+
+
+2. Acelerando:
+
+
+	-HEAD: HEAD es el nombre simbólico del commit sobre el que se ha hecho checkout -- es, básicamente, el commit sobre el que se está trabajando. HEAD siempre apunta al commit más reciente, reflejado 
+	       en el árbol de commits. La mayoría de los comandos de git que hacen cambios al árbol de commits empiezan modificando HEAD. Normalmente HEAD apunta al nombre de una rama. 
+	       Cuando se crea un commit, el estado de la rama se altera y este cambio es visible a través de HEAD.
+
+
+	-Referencias relativas: Moverse por git usando los hashes de los commits puede volverse un tanto tedioso. Usar git log para ver los hashes. Lo interesante es que git es bastante astuto con los hashes. 
+                        	Sólo requiere que se especifique una cantidad de caracteres suficientes para identificar unívocamente al commit. 
+				Operadores ^ (ej: main^) y ~<num> (ej: main~2) para moverse 1 o num commits hacia atrás.
+				git branch -f main HEAD~3 -> Mueve (forzadamente) la rama main tres padres por detrás de HEAD.
+
+
+	-Revertir cambios en git: Tal como al hacer commit, revertir cambios en git tiene tanto un componente de bajo nivel (indexar archivos o fragmentos individualmente) como un componente de alto nivel 
+				  (cómo son efectivamente revertidos los cambios). Hay dos formas principales de deshacer cambios en git, uno es usando git reset y el otro es usando git revert.
+
+
+	-Git Reset: git reset deshace los cambios moviendo la referencia de una rama hacia atrás en el tiempo a un commit anterior. En este sentido puedes verse como "reescribir la historia". 
+		    git reset va a mover la rama hacia atrás, como si el commit nunca se hubiera hecho.
+
+
+	-Git Revert: Mientras que resetear los cambios funciona estupendamente para ramas locales, su método de "reescribir la historia" no funciona para ramas remotas que otros están usando.
+             	     Para revertir cambios y compartir esa revertida con otros, se necesita usar git revert.
+
+
+
+
+
+3. Moviendo el trabajo por ahí:
+
+
+	-Git Cherry-Pick: Manera bastante directa de decir que se quiere copiar una serie de commits sobre la ubicación actual (HEAD). Ej: git cherry-pick commit1 commit2 commit4
+
+
+	-Git Rebase Interactivo: ¿Qué pasa cuando no se sabe qué commits se desean? Se puede usar el rebase interactivo para esto -- es la mejor manera de revisar una serie de commits que están a punto 
+				 de ser rebaseados. Todo rebase interactivo significa usar el comando rebase con la opción -i. Si se incluye esta opción, git abrirá una UI para mostrar qué commits
+				 están a punto de ser copiados sobre el objetivo del rebase. También muestra sus hashes y mensajes, que ayuda mucho para saber qué es cada commit. La UI signfica abrir 
+				 un archivo en un editor de textos como vim. Cuando el diálogo de rebase interactivo se abre, se tiene la capacidad de hacer 3 cosas:
+
+			 	-Puedes reordenar los commits con solamente cambiar su orden en la UI.
+				-Puedes elegir ignorar completamente algunos commits. Esto se designa con pick -- no hacerle pick a algún commit significa que quieres ignorarlo.
+			 	-Finalmente, puedes squashear commits. Resumiendo, te permite combinar varios commits en uno solo.
+
+
+
+
+
+4. Un poco de todo: Ejercicios para practicar.
+
+	-git commit --amend -> Manera práctica de modificar el commit más reciente. Permite combinar los cambios preparados con el commit anterior en lugar de crear un commit nuevo. 
+			       También puede usarse para editar el anterior mensaje del commit sin cambiar la instantánea. Sin embargo, el comando no se limita a alterar el commit más reciente, sino que lo 
+			       reemplaza por completo, por lo que el commit corregido será una entidad nueva con su propia referencia. Para Git, se verá como un commit nuevo.
+
+
+	-Tags en Git: Forma de marcar permanentemente puntos en la historia del proyecto. Los tags de git soportan exactamente marcan permanentemente determinados commits como "hitos" que se pueden referenciar 
+		      como a un branch. Aún más importante, los tags no avanzan cuando se crean nuevos commits. No se puede hacer checkout a un tag y completar el trabajo en ese tag - los tags son 
+	              marcas fijas en el árbol de commits que designan ciertos puntos.
+
+
+	-Git Describe: Como los tags sirven tanto para marcar "hitos" en el código, git tiene un comando para describir (describe) dónde se está relativo al "tag" más cercano. 
+	               Git describe puede ayudar a saber dónde se está después de que haberse movido varios commits hacia adelante o atrás en la historia. Esto puede pasar después de terminar un git bisect 
+
+	       	       git describe <ref> -> <ref> es cualquier cosa que git puede resolver a un commit. Si no se especifica ninguna referencia, git simplemente usa el commit en el que se está ahora (HEAD).
+	       				     La salida de ese comando se ve así: <tag>_<numCommits>_g<hash> -> Donde tag es el tag más cercano en la historia, numCommits dice a cuántos commits de ese tag se 
+					     está, y <hash> es el hash del commit que se está describiendo.
+
+
+
+
+
+5. Temas avanzados
+
+
+	-Especificando los padres: Como el modificador de ~, ^ también acepta un número opcional después de él. En lugar de especificar cuántas generaciones hacia atrás ir (como ~), el modificador de ^ especifica 
+				   por cuál de las referencias padres seguir en un commit de merge. Recordar que un commit de merge tiene múltiples padres, por lo que el camino a seguir es ambiguo. Git normalmente 
+				   sigue el "primer" padre de un commit de merge, pero especificando un número junto con ^ cambia este comportamiento predefinido.
+
+	-Ej: git branch -f main HEAD~^2~3 -> Fuerza a la rama main moverse en primer lugar un commit por encima de HEAD, tras esto, suponiendo que viene de merge, escoger el segundo padre y moverse a partir de ahí 
+					     3 commits hacia atrás.
+
+
+
+
+
+6. Push y Pull -- Git Remotes!
+
+
+	-Git clone: Realizar una copia en local de un repositorio remoto.
+
+	-Ramas Remotas de Git: Las ramas remotas reflejan el estado de los repositorios remotos. Ayudan a entender las diferencias entre trabajo local y el trabajo que ya está publicado. Las ramas remotas tienen 
+			       la propiedad especial de que cuando se hace checkout sobre ellas, se pasa al modo detached HEAD. Git lo hace a propósito porque no se puede trabajar en esas ramas directamente: 
+			       se tiene que trabajar en algún otro lado y después compartir el trabajo con el remoto (tras lo que las ramas remotas se actualizarán).
+
+
+	-Git Fetch: Hace dos simples pasos: baja los commits que el remoto tiene pero no están en el repositorio local, y actualiza a dónde apuntan las ramas remotas. Escencialmente sincroniza la representación local 
+		    del repositorio remoto con el verdadero estado del repositorio remoto. Sin embargo, git fetch no modifica en absoluto el estado local. No va a actualizar la rama main ni va a cambiar nada sobre 
+		    cómo se ve el sistema de archivos en este momento.
+
+
+	-Git Pull: Atajo para hacer git fetch y git merge origin/main (rama remota). git pull --rebase es atajo para fetch y rebase.
+
+
+	-Git Push: responsable de subir los cambios a un remoto específico y de actualizar ese remoto para incluir los nuevos commits. Cuando se trabaja con una versión desactualizada del repo remoto en local, 
+		   git obliga a hacer un pull antes de poder hacer un push. Todo lo que se tiene que hacer es basar el trabajo en la versión más reciente de la rama remota. La forma más simple es mover 
+		   el trabajo haciendo un rebase. También con merge.
+
+
+
+	   
+
+7. Hasta el origen y más allá -- Git Remotes avanzado!
+
+
+	-Git rebase vs Git merge cuando se hace push. El primero deja árbol limpio pero con historial de commits confuso y el segundo lo contrario.
+
+
+	-Forma 1 Track ramas remotas: git checkout -b absolutamenteNoEsMain o/main -> Crea una nueva rama llamada absolutamenteNoEsMain y la hace trackear a o/main.
+
+
+	-Forma 2 Track ramas remotas: git branch -u o/main foo -> se establece que la rama foo trackee a o/main. Si encima se está en foo, incluso se puede obviarlo -> git branch -u o/main
+
+
+	-Parámetros Git Push: git push toma, opcionalmente, parámetros de la forma: git push <remoto> <lugar> -> lugar es origen y destino de pull y push respectivamente.
+
+		-git push origin main -> Ve a la rama llamada "main" en repositorio local, coge todos los commits, y después vete a la rama "main" del remoto llamado "origin". 
+					 Copia ahí todos los commits que falten, y avísa cuando termines.
+
+		-git push origin <origen>:<destino> -> Especifica un origen de donde hacer pull y un destino donde hacer push distintos
+
+
+
+	-Parámetros Git Fetch: mismo tipo de conceptos, pero aplicados en la dirección opuesta. 
+
+		-git fetch origin foo -> Git va a ir a la rama foo en el remoto, va a traer todos los commits que no estén presentes localmente, y luego los aplicará sobre la rama o/foo localmente.
+	
+		-git fetch origin <origen>:<destino> -> Va al remoto y coge lo de la rama origen y lo transfiere a la rama destino en local de forma opuesta al git push correspondiente.
+
+
+
+	-Especificar la "nada" como origen en los push y fetch -> git push origin :side; git fetch origin :bugFix
+
+		-git push origin :side -> Elimina la rama remota denominada side
+
+		-git fetch origin :bugFix -> Crea una rama en local denominada bugFix
+
+
+
+	-Parámetros Git Pull: Simplemente aplica a los parámetros de git fetch pero haciendo un merge tras su uso.
+
+		-git pull origin foo == git fetch origin foo; git merge o/foo
+	
+		-git pull origin bar~1:bugFix == git fetch origin bar~1:bugFix; git merge bugFix
+
