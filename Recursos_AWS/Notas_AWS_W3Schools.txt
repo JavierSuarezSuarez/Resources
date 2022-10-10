@@ -1,0 +1,577 @@
+-------------------------------------------------------------------------------------------- NOTAS CURSO AWS W3SCHOOLS -----------------------------------------------------------------------
+
+
+############################################################################################ UNIDAD 1 ##########################################################################################
+
+-Sección: AWS Cloud Computing
+
+	-Los 3 modelos de despliegue
+
+		-Cloud-Based Deployment: Todo en la nube. Aamazon tiene la infraestructura y todos los servicios.
+
+		-On-Premises Deployment: Desplegado en local usando herramientas de Amazon para gestionar recursos localmente 
+                                 	 (Máqquinas virtuales descargables, etc.)
+
+		-Hybrid Deployment: Una mezcla, se tiene desplegado localmente la infraestructura pero se usan servicios de la nube de
+		            	    Amazon como por ejemplo una Base de Datos.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección: AWS EC2 Instance Types
+
+
+	-Los tipos de Instancia de EC2:
+
+		-General Purpose Instance
+
+		-Compute Optimized Instances
+
+		-Memory Optimized Instances
+
+		-Accelerated Computing Instances
+
+		-Storage Optimized Instances
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección: AWS EC2 Scaling
+
+	-Autoescalado. Diferentes aproximaciones:
+
+		-Dynamic scaling: responds to changing demand
+		-Predictive scaling: schedules the number of instances based on a predicted demand
+		-Dynamic and Predictive scaling can be combined to scale faster
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección: AWS Elastic Load Balancing Service (ELB)
+
+	-Distribuye el tráfico de las aplicaciones entre los servicios.
+
+	-Es un punto de contacto del tráfico web siendo el primer lugar donde llega dicho tráfico y a partir del cual este
+	 se encarga de distribuir la carga entre los recursos.
+
+	-El Balancer acepta las solicitudes y las redirige a instancias apropiadas, garantizando que un recurso no se sobrecargue.
+
+	-Esta construido para dar soporte a tráfico elevado sin incrementar el coste horario y se escala automáticamente.
+
+	-El principio de alojar tráfico en recursos es el mismo aunque la demanda sea alta o baja, reálizandolo entre lo que esté disponible en cada momento.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+-Sección: AWS Messaging
+
+	-Las aplicaciones están hechas de numerosos componentes que se comunican entre ellos, transmitiendo datos, completando solicitudes o manteniendo el funcionamiento de la app.
+	
+	-Aplicación Monolítica: Aplicación con componentes (base de datos, servidores, interfaces, etc.) altamente acoplados. Si un componente falla, el sistema se viene abajo.
+
+	-Microservices: Ayudan a mantener el funcionamiento ya que están poco acoplados y se comunican entre ellos.
+
+	-AWS posee dos servicios que pueden hacer esta integración: AWS Simple Notification Service (AWS SNS) y AWS Simple Queue Service (AWS SQS).
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+-Sección: AWS SNS (Simple Notification Service)
+
+	-Servicio en la nube para la entrega en masa de mensajes.
+
+	-Es un servicio de mensajería bajo subscripción y comunicación móvil completamente gestionable.
+
+	-Puede ser dirigido por eventos, con servicios automáticos que responden a disparadores (triggers).
+
+	-Los sistemas distribuidos y los microservicios pueden ser desacoplados con la mensajería entre ellos usando SNS.
+
+	-La mensajería con los usuarios es posible a través de SMS, email y notificaciones de móvil.
+
+	-Endpoints:HTTP and HTTPS, Email and Email-JSON, AWS SQS, Applications, AWS Lambda, SMS (depending on region)
+
+	-SQS vs SNS: SNS es sistema de notificaciones que son enviadas a sus subscriptores mientras que SQS es sistema de encolado y los receptores deben seleccionar los mensajes
+		     para procesarlos y eliminarlos de la cola. Ambos servicios pueden trabajar bien juntos.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección: AWS SQS (Simple Queue Service)
+
+	-Servicio que intercambia y almacena mensajes entre componentes software. El servicio añade los mensajes a una cola y los usuarios los procesan y los quitan de la cola.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección: AWS Serverless
+
+	-Servicio donde no hay que tener en cuenta servidores. La nube se encarga de ello y solo hay que preocuparse del código.
+
+	-La diferencia con EC2 es que usando estas últimas se tiene que pensar en operar el server mientras que con serverless es la nube la que se encarga de ello.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección: AWS Lambda
+
+	-Servicio de computación serverless. El servicio permite ejecutar código sin pensar en la infraestructura, pagando sólo el tiempo de ejecución
+	 del código.
+
+	-Pasos generales a realizar: Desplegar el código en Lambda, Hacer que el código esté listo para disparar un evento que cuando se lance ejecute el código.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección: AWS Cloud Containers
+
+	-Permiten empaquetar el código en un objeto simple aislándolo de dependencias u otros componentes. El código se ejecuta de forma aislada.
+
+	-Facilitan el debug y se mantiene consistente de forma inherente a como se despliega.
+
+	-Es importante diseñar en escala cuando se usan containers, pensando en el número de hosts y containers por host necesarios.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección: AWS ECS (Elastic Container Service)
+
+	-Sistema de gestión construido para el escalado y el alto rendimiento.
+
+	-Soporta Docker, incluyendo planes open-source y de pago, usando llamadas API para lanzar y parar las aplicaciones.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección AWS EKS (Elastic Kubernetes Service)
+
+	-Servicio gestionado que permite ejecutar Kubernetes en AWS. Construido para el escalado con Kubernetes.
+
+	-Se puede usar para desplegar en la nube o localmente (on-premise).
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección AWS Fargate
+
+	-Servicio de computación serverless para contenedores.
+
+	-Maneja la infraestructura de servidores de forma orientada al uso de Contenedores.
+
+	-Puede ser usado con ECS y EKS
+
+
+############################################################################################ UNIDAD 2 ##########################################################################################
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección AWS Infrastructure
+
+	-Data Centers en todo el mundo. Capacidad de soportar la carga de trabajo si uno falla. Seleccionar uno cerca de los usuarios mejora la latencia y su experiencia de uso
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección AWS Regions
+
+	-Razones para elegir una región u otra: Regulaciones de datos, Proximidad al cliente, Disponibilidad del servicio, Coste (Pricing)
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección AWS Availability Zones
+
+	-Zona de disponibilidad: Un Data Center o grupo de Data Centers en una región concreta. Estos Data Centers están separados para evitar caida masiva y para baja latencia pero en la misma región.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección AWS Edge Location
+
+	-Edge Location: Es el Data Center usado para proporcionar el contenido de forma rápida a los usuarios (más cercano a ellos). Utilizan para ello un servicio denominado CloudFront que almacena
+	 copias cacheadas del contenido para el rápido acceso de los usuarios.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección AWS Provision
+
+	-3 formas principales de interactuar con los servicios AWS: Management Console (Web GUI), CLI, SDKs en varios lenguajes.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección AWS Provision Services
+
+	-2 herramientas: AWS Elastic Beanstalk y AWS CloudFormation
+
+	-AWS Elastic Beanstalk: Se proporciona código y opciones de configuración para desplegar los recursos necesarios para tareas como ajuste de capacidad, balanceo de carga, autoescalado o monitorización de la app
+
+	-AWS CloudFormation: Permite construir un entorno a partir de líneas de código evitando el uso de la CLI para desplegar recursos individualmente.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección AWS Elastic Beanstalk
+
+	-Es un servicio de gestión web que permite la gestión del despliegue y escalado de apps web y servicios. Ayuda a gestionar el setup, la configuración, el escalado y el aprovisionamiento de servicios AWS.
+
+	-Dichos servicios son: EC2, S3, RDS, DynamoDB, SimpleDB
+
+	-Tiene soporte para Java, Docker, .NET, Node.js, etc.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección AWS CloudFormation
+
+	-Es un servicio de infraestructura que permite crear templates que describen los servicios a usar para luego gestionar la configuración y el aprovisionamiento de lo indicado
+	 en dichos templates. Ayuda a gestionar las dependencias entre recursos y evita que se tenga que configurar los recursos individualmente.
+
+
+
+
+############################################################################################ UNIDAD 3 ##########################################################################################
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección AWS Networking
+
+	-AWS dispone de numerosas formas de conectividad que dependen del setup y los requerimientos necesarios
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección AWS Connectivity
+
+	-AWS Virtual Private Cloud (VPC): Servicio que permite aislar los recursos en una red aislada. Las limitaciones creadas alrededor de los recursos permiten a AWS restringir el tráfico red.
+
+	-Los recursos pueden ser organizados en subredes que son secciones en una VPC que pueden contener recursos.
+
+	-Internet Gateway: "Puerta" entre la VPC e Internet que permite el tráfico público hacia la VPC.
+
+	-Virtual Private Gateway: Se usa para acceder a recursos privados de la VPC. Tiene más capas de protección y permite tráfico cifrado (VPNs).
+
+	-AWS Direct Connect: Permite crear una conexión privada dedicada entre el DataCenter y una VPC. Consiste en un link que posee el usuario para la conexión.
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección AWS Subnet and Access
+
+	-Subnets, Public y Private Subnets, Network Traffic, ACL (Stateless packet Filtering -> No recuerdan el paquete una vez cumplido su check), 
+	 Security Groups (Firewall, Statefull packet Filtering -> si recuerdan)
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección AWS Global Networking
+
+	-AWS Route 53: Es un servicio web DNS que conecta usuarios y sus solicitudes a los recursos AWS y externos. Se muestra ejemplo de su uso con CloudFront.
+
+
+
+############################################################################################ UNIDAD 4 ##########################################################################################
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección AWS Instance Stores
+
+	-Son volúmenes de almacenamiento que actúan como discos duros. Los datos persisten durante la vida de la instancia. Si es reinicializada se mantiene pero si es hibernada o
+	 terminada, se pierden los datos. Si la instancia arranca desde el estado de stop, puede que se ejecute desde otro host que no tiene sus instance stores.
+
+	-Son adecuados para datos temporales o aquellos que pueden ser facilmente recreados.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección AWS EBS
+
+	-EBS (Elastic Block Store): Servicio que proporciona volumenes de almacenamiento para datos que deben persistir.
+
+	-Es importante hacer backups con AWS EBS snapshots. La primera es completa y a partir de ahí son incrementales haciendo copia solo de lo que cambia entre snapshots.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección AWS S3
+
+	-S3 (Simple Storage Service): Servicio de almacenamiento ilimitado que permite la subida de cualquier tipo de ficheros con tamaño máx. 5 TB. Se le puede establecer permisos a los ficheros y
+	 es almacenamiento a nivel de objeto.
+
+	-Almacenamiento a nivel de objeto: Contienen objetos que se componen de Datos, Metadatos e Ientificador.
+
+	-Existen diferentes clases de S3 en base a disponibilidad, frecuencia de acceso a datos y coste:
+
+		-S3 Standard: Datos accedidos a veces, alta disponibilidad de objetos almacenados, guarda datos en al menos 3 Zonas de disponibilidad, Es la más cara
+
+		-S3 Standard-Infrequent Access: Datos accedidos a veces, mismo nivel de disponibilidad que el anterior, menor coste de almacenamiento pero mayor de acceso a datos
+
+		-S3 One Zone-IA (S3 One Zone-Infrequent Access): guarda datos en 1 Zona de disponibilidad, más barato que anteriores.
+
+		-S3 Intelligent-Tiering: Requiere automatización y monitorización, Para datos con cambio de acceso desconocido o frecuente, Mueve los objetos a S3 Standard-IA si no son accedidos en 30 dias
+					 y mueve a S3 Standard los objetos accedidos desde S3 Standard-IA y S3 One Zone-IA
+
+		-S3 Glacier: Recomendado para archivar datos. Proporciona los objetos en minutos y es más barata y lenta
+
+		-S3 Glacier Deep Archive: Igual que la anterior, es la más barata y proporciona los objetos hasta en 12 horas.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección AWS EBS vs S3
+
+	-AWS EBS: Datos almacenados en bloques, cada bloque hasta 17,6 TB, Más rápido en su performance que S3, los datos pueden ser modificados
+
+	-AWS S3: Datos almacenados en objetos, cada objeti hasta 5 TB, los datos no sufren degradación, pérdida o corrupción por un largo periodo de tiempo, los datos no pueden ser modificados a menos que sean resubidos
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección AWS EFS
+
+	-EFS (Elastic File System): Datos accedidos a traves de rutas de ficheros, a diferencia de EBS, guarda los datos en varias Zonas de disponibilidad, su escalado no agravia las apps, 
+				    ideal si varios servicios necesitan acceder a los mismos datos al mismo tiempo.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección AWS RDS
+
+	-RDS (Relational Database Service): Servicio para automatizar tareas de BDs. Permite la ejecución de BDs en la AWS Cloud. 
+	
+	-Tiene soporte para los motores de BD: Amazon Aurora, PostgreSQL, MySQL, MariaDB, Oracle Database, Microsoft SQL Server.
+
+	-Estos motores proporcionan cifrado en el almacenamiento, envío y recepción de datos.
+
+	-Amazon Aurora: Es una BD relacional con alta disponibilidad y excelente para grandes cantidades de datos. 5 veces más rápida que MySQL y 3 veces que PostgreSQL.
+			Crea 6 copias a través de 3 Zonas de disponibilidad y una de backup en S3.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección AWS DynamoDB
+
+	-Es una BD no relacional (NoSQL), serverless y con alto performance.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección AWS DynamoDB vs RDS
+
+	-Sus diferencias son a nivel conceptual (uno almacena en tablas datos simples y otro en documentos datos commplejos) y que RDS es más cara y lenta que DynamoDB.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección AWS Redshift
+
+	-Es un servicio de análiis de Big Data. Puede recopilar info de muchas fuentes y asiste buscando conexiones entre los datos. Usa SQL, hardware AWS y Machine Learning
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección AWS DMS
+
+	-DMS (Data Migration Service): Permite mover datos entre bases de datos (origen y destino). La BD origen seguirá operacional durante el proceso de migración.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección AWS Additional DB Services
+
+	-DocumentDB: BD de documentos, da soporte para MongoDB.
+
+	-Neptune: BD de grafo.
+
+	-QLDB (Quantum Ledger DB): Para datos en forma de históricos.
+
+	-Managed Blockchain: Utiliza frameworks open source para crear y gestionar redes de blockchain.
+
+	-Elastic Cache: Añade capas de cache sobre la BD.
+
+	-DynamoBD Accelerator (DAX): Servicio de cache en memoria para DynamoDB. Mejora tiempos de lectura y respuesta.
+
+
+
+
+############################################################################################ UNIDAD 5 ##########################################################################################
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección AWS Shared Responsibility
+
+	-Modelo de responsibilidades compartidas entre AWS y el Cliente
+
+	-Responsabilidades de AWS: Seguridad de la nube y las capas de infraestructura (Data centers, Hardware y Software, Virtualización, Redes
+
+	-Responsabilidades del Cliente: Seguridad en el uso de los servicios y su configuración.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección AWS User Access
+
+	-AWS IAM (Identity and Access Management): Facilita la gestión segura de recursos y servicios. Características: Root user, Users, Policies, Groups, Roles, MFA (Multi-factor auth.)
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección AWS Organizations
+
+	-Es un contenedor de cuentas aws. Viene con un usuario root. Permite gestionar los permisos de las cuentas incluidas. Estos permisos estan controlados por el SCP (Service Control Policies).
+
+	-Organizational Units: Grupos de cuentas dentro de una Organization. Se usan para gestionar cuentas con iguales o similares permisos de forma fácil.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección AWS Cloud Compliance
+
+	-AWS Artifact: Servicio que proporciona acceso a reports de cumplimiento y seguridad AWS bajo demanda. Consiste en 2 tipos de Reports/Agreements
+
+	-AWS Artifact Reports: Reports de cumplimiento de normativa a partir de estándares.
+	
+	-AWS Artifact Agreements: Acuerdos sobre el uso de ciertos tipos de información.
+
+	-Para el cliente existe un Customer Compliance Center para conocer todo lo relacionado con el cumplimiento de AWS.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección AWS DDoS
+
+	-AWS Shield: protege en dos versiones, Estándar y Avanzada (con costes adicionales), de los ataques DoS y DDoS.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección AWS Other Services
+
+	-AWS KMS (Key Management Service): Usa claves criptográficas para asegurar la seguridad de la aplicación.
+
+	-AWS WAF (Web Application Firewall): Monitoriza, permite o bloquea tráfico web a través de ACLs.
+
+	-Amazon Inspector: Busca actualizaciones, da reports de compliance para mejorar seguridad y compliance.
+
+	-Amazon GuardDuty: Servicio de detección de amenazas a través de monitorización y proporcionando reports.
+
+
+
+############################################################################################ UNIDAD 6 ##########################################################################################
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección AWS CloudWatch
+
+	-Servicio web para monitorizar los recursos. Permite establecer alarmas para controlar por ejemplo tiempos ociosos de los recursos.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección AWS CloudTrail
+
+	-Hace log de las acciones del entorno AWS. Graba las llamadas API de la cuenta AWS. También graba Identidad, IP, etc.
+
+	-Permite crear eventos para ver que ha pasado en una situación concreta. Además permite detectar situaciones inusuales através de automatización
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección AWS TrustedAdvisor
+
+	-Servicio web en tiempo real que comprueba la cuenta AWS, la evalúa y realiza recomendaciones. Estas van en cuanto a optimización del coste, límites de servicios, etc.
+
+
+
+############################################################################################ UNIDAD 7 ##########################################################################################
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Esta unidad es mas orientada a los diferentes planes que ofrece AWS, incluyendo formas de calcular/estimar costes y presupuestos así como otras cuestiones relacionadas.
+
+-Se ven las siguientes utilidadesm y conceptos de AWS relacionados con esto: AWS Pricing Calculator, AWS Billing Dashboard, AWS Consolidated Billing, AWS Budget, 
+									     AWS Cost Explorer, AWS Support Plans, AWS Marketplace
+
+
+
+############################################################################################ UNIDAD 8 ##########################################################################################
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección AWS Cloud Adoption Framework
+
+	-AWS CAF: Es un framework que asiste a la migración de aplicaciones a la nube.
+
+	-Posee 6 areas de recomendaciones: Negocio, Personas, Gobernanza, Plataforma, Seguridad y Operaciones.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección AWS Migration Strategies
+
+	-Existen 6 estrategias más comunes para la migración de aplicaciones
+
+	-Rehosting (lift-and-shift): Proceso de mover aplicaciones sin hacerles ningún cambio.
+
+	-Replatforming (lift, tinker and shift): Proceso de mover aplicaciones con optimizaciones de la nube.
+
+	-Refactoring (re-architecting): Proceso de cambio del núcleo y/o entorno de una app, ayudando al escalado, rendimiento, etc.
+
+	-Repurchasing: Proceso de cambiar el tipo de negocio. Mover la aplicación a un modelo SaaS desde uno tradicional.
+
+	-Retaining: Conlleva el mantener aplicaciones de negocio cruciales. Puede incluir apps que requieran refactoring antes de su migración.
+
+	-Retiring: Proceso de eliminar aplicaciones innecesarias.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección AWS Snow Family
+
+	-Es un grupo de dispositivos físicos (hardware) para el transporte de datos desde y hacia AWS.
+
+	-Pueden transferir hasta hexabytes de datos.
+
+	-Se dividen en 3 dispositivos en base a su almacenamiento y velocidades de transferencia: 
+
+	-AWS Snowcone, AWS Snowball y AWS Snowmobile.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección AWS Innovation
+
+	-AWS permite mejorar el negocio en la nube ya tiene numerosos servicios en áreas como:
+
+	-Machine Learning: Servicio Amazon SageMaker.
+
+	-Artificial Intelligence: Servicios Amazon Lex, Amazon Transcribe, Amazon Comprehend y Amazon Fraud Detection.
+
+	-Serverless applications: Servicio AWS Lambda.
+
+
+
+############################################################################################ UNIDAD 9 ##########################################################################################
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-Sección AWS Well-Architected Framework
+
+	-Es una herramienta que utiliza las mejores prácticas para buscar mejoras para las apps en la nube.
+
+	-Ayuda en 5 áreas: Excelencia operacional, Seguridad, Fiabilidad, Eficiencia en la performance, Optimización del coste.
+
+	-Estas áreas se denominan los 5 pilares del AWS Well-Architected Framework
+
+
+
+
