@@ -1,0 +1,205 @@
+---------------------------------------------------- CONFIGURACIÓN DE RED EN UBUNTU --------------------------------------------------------
+-
+0. Previos
+
+
+	-Ayuda usando -> man interfaces (forma de configurar red antigua) o man netplan (forma nueva)
+
+	-Este link muestra los cambios en la config de red desde la versión 20.04 -> https://mytcpip.com/netplan-ubuntu/
+
+	-Ver interfaces con -> ip a; netstat; sudo lshw -class network
+
+	-Netplan permite seleccionar el nombre deseado para una interfaz con match y set-name, tal y como se ve a continuación.
+
+		network:
+  		  version: 2
+  		  renderer: networkd
+  		  ethernets:
+    		   eth_lan0:
+                     dhcp4: true
+                     match:
+                      macaddress: 00:11:22:33:44:55
+                     set-name: eth_lan0
+
+
+	-Ethtool es un programa para cambiar opciones de configuración de la tarjeta de red como la autonegociación, velocidad de puerto, 
+	 duplex mode o Wake-on-LAN.
+
+		sudo ethtool eth4
+		Settings for eth4:
+    			Supported ports: [ FIBRE ]
+    			Supported link modes:   10000baseT/Full
+    			Supported pause frame use: No
+    			Supports auto-negotiation: No
+    			Supported FEC modes: Not reported
+    			Advertised link modes:  10000baseT/Full
+    			Advertised pause frame use: No
+    			Advertised auto-negotiation: No
+    			Advertised FEC modes: Not reported
+    			Speed: 10000Mb/s
+    			Duplex: Full
+    			Port: FIBRE
+    			PHYAD: 0
+    			Transceiver: internal
+    			Auto-negotiation: off
+    			Supports Wake-on: d
+    			Wake-on: d
+    			Current message level: 0x00000014 (20)
+                   			link ifdown
+   		 	Link detected: yes
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+1. Configuración No permanente
+
+	-Configurar IP estática temporal a interfaz:
+
+		-sudo ifconfig eth0 192.168.72.6 netmask 255.255.255.0 -> Establece IP con máscara a eth0
+
+		-sudo ip addr add 10.102.66.200/24 dev enp0s25 -> Realizar lo anterior con comando ip. 
+								  Tras ello se puede -> ip link set dev enp0s25 up; ip link set dev enp0s25 down
+
+
+	-Configurar IP dinámica temporal a interfaz -> Con dhclient
+
+
+	-Borrar configuración IP de la interfaz:
+
+		-ip addr flush eth0 -> Borra la configuración de una interfaz concreta. NO borra /etc/resolv.conf que pudiera ser usado para DNS.
+
+
+	-Ver información de interfaz:
+
+		-ip address show dev enp0s25 -> Para ver con comando ip la interfaz.
+
+
+	-Configurar Tabla de Enrutamiento:
+
+		-sudo route add default gw 192.168.72.1 eth0 -> Añade la Gateway
+
+		-sudo ip route add default via 10.102.66.1 -> Realizar lo anterior con comando ip.
+
+		-ip route show -> Para ver con comando ip la tabla de enrutamiento
+
+	
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+2. Configuración Permanente 
+
+
+	-Para establecer una IP dinámica:
+
+		-Usando /etc/network/interfaces (forma antigua):
+
+			auto eth1
+  		  	 iface eth1 inet dhcp
+
+
+		-Usando netplan (/etc/netplan/99_config.yaml) (forma nueva):
+
+			network:
+  			  version: 2
+  			  renderer: networkd
+  			  ethernets:
+    			    enp3s0:
+      			      dhcp4: true
+
+			sudo netplan apply
+
+
+	-Para establecer una IP estática:
+
+		-Usando /etc/network/interfaces (forma antigua):
+
+			auto eth1
+  		          iface eth1 inet static
+  		          address 192.168.72.8
+  		          netmask 255.255.255.0
+  		          gateway 192.168.72.1
+  		          dns-nameservers 8.8.8.8 4.4.2.2
+
+
+		-Usando netplan (/etc/netplan/99_config.yaml) (forma nueva):
+
+			network:
+  			  version: 2
+  			  renderer: networkd
+  			  ethernets:
+    			    eth0:
+     			 	addresses:
+        			   - 10.10.10.2/24
+     		 		gateway4: 10.10.10.1
+      				nameservers:
+          			   search: [mydomain, otherdomain]
+          			   addresses: [10.10.10.1, 1.1.1.1]
+
+			sudo netplan apply
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+3. Bridging
+
+	-Usando netplan
+
+		network:
+  		  version: 2
+  		  renderer: networkd
+  		  ethernets:
+    		    enp3s0:
+      			dhcp4: no
+ 		  bridges:
+    		    br0:
+      			dhcp4: yes
+      			interfaces:
+        		  - enp3s0
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+4. DHCP (Servidor)
+
+
+	-sudo apt install isc-dhcp-server -> Instalarlo
+
+
+	-En /etc/dhcp/dhcpd.conf, por ejemplo:
+
+		# minimal sample /etc/dhcp/dhcpd.conf
+		default-lease-time 600;
+		max-lease-time 7200;
+
+		subnet 192.168.1.0 netmask 255.255.255.0 {
+ 			range 192.168.1.150 192.168.1.200;
+ 			option routers 192.168.1.254;
+ 			option domain-name-servers 192.168.1.1, 192.168.1.2;
+ 			option domain-name "mydomain.example";
+		}
+
+
+	-En /etc/default/isc-dhcp-server:
+
+		INTERFACESv4="eth4"
+
+	-Finalmente:
+
+		sudo systemctl restart isc-dhcp-server.service
+		
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+5. Cambiar hostname -> sudo nano /etc/hostname
+
+6. Cambiar hosts -> sudo nano /etc/hosts
+
+7. Para reiniciar red -> sudo systemctl restart networking
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Bonus: Wake-on-LAN (WoL) -> Estándar de redes Ethernet que permite encender remotamente computadoras apagadas. 
+			    Requieren de poseer componente hardware y se realiza a través de un paquete de datos "mágico" enviado a dichas computadoras.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Bonus 2: El Name Service Switch (NSS), cuyo fichero de config es /etc/nsswitch.conf, define el orden de búsqueda de hostnames.
+	 Ej: hosts:          files mdns4_minimal [NOTFOUND=return] dns mdns4 -> Busca en ficheros, luego en Multicast DNS, Si no encuentra respuesta NOT Found, 
+										dns es legacy unicast DNS query y mdns4 es Multicast DNS query
