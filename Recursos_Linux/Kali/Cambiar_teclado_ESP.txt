@@ -1,0 +1,12 @@
+
+
+Comandos para cambiar la disposición de teclado en Kali Linux:
+
+
+	-setxkbmap -layout es
+
+	-sudo su
+
+	-localectl --no-convert set-x11-keymap es
+
+	-reboot
