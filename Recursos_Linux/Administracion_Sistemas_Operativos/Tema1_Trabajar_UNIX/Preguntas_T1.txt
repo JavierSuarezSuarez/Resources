@@ -1,0 +1,62 @@
+1. ¿En qué se diferencia una distribución Linux de otra?
+
+   Cada distribución de Linux se diferencia en los objetivos para los que se creó, por ejemplo, algunas tienen el objetivo de aprovechar 
+   más el hardware que otras, otras estan pensadas para  las personan que se inician en Linux, ofreciendo una interfaz amigable etc.
+   Por ello, las distribuciones tienen instaladas sus propias  herramientas, shell,  GUI, etc. 
+
+
+2. ¿Cómo puedes saber si un paquete P está instalado en CentOS?
+
+   Con la orden yum list installed
+
+3. ¿Qué es un repositorio de paquetes?
+
+   Un repositorio de paquetes es un lugar de almacenamiento, normalmente un servidor, desde el cual se descargan los paquetes necesarios para instalar programas. 
+
+4. ¿Qué es una sección dentro de las páginas de manual?
+
+   Una sección dentro  del manual es un apartado del manual en el que se habla de un tópico concreto. Hay 8 grandes secciones, entre las que se encuentra la sección de Llamadas al sistemas o la de Llamadas a la biblioteca de funciones.
+ 
+   En una  página del manual, como por ejemplo la que sale al hacer man yum, observamos que ésta se divide a su vez en secciones en las que se explica de manera formal, detalles sobre la orden o función que se está consultando.
+
+5. En FHS, ¿cuáles de estos directorios son obligatorios y cuáles son opcionales? /bin, /home, /proc, /var
+  
+   Obligatorios son los directorios /bin, /proc y /var y Opcional /home
+
+6. En FHS, ¿qué diferencia hay entre los directorios /bin y /usr/local/bin?
+
+  En /bin se guardan los binarios (ejecutables) del software instalado en el sistema para su uso en modo monousuario
+  y para reparaciones del sistema, mientras que en /usr/local/bin se guardan los binarios de las instalaciones 
+  de software no esencial y local a ese directorio
+
+7. ¿Cómo puedes apagar el sistema de forma segura desde la consola?
+
+   Para apagar el sistema de forma segura, se pueden usar las órdenes shutdown o poweroff. 
+   En el caso de que se quiera un posterior reinicio del sistema, se puede usar reboot
+
+8. ¿Qué es el modo single user?
+
+   Es el nivel 1 (en System V) de ejecución (runlevel) correspondiente a rescue.target en Systemd. 
+   En este nivel solo se puede acceder con root y sirve para mantenimiento y pruebas del sistema.
+
+9. ¿Para qué sirven los niveles de ejecución?
+
+   Permiten determinar diferentes configuraciones de acceso, uso y apagado del sistema. Por ejemplo, un nivel indica
+   que el sistema se encuentra apagado, otro sirve para mantenimiento, otro para acceso con interfaz gráfica etc.
+
+10. ¿Cómo puedes saber qué servicios se encuentran activos ahora mismo?
+
+ Con la orden systemctl -t service list-units -all se puede observar, entre otras cosas, 
+ los servicios activos e inactivos.
+
+
+11. En systemd, ¿qué diferencia hay entre un objetivo (target) y un servicio?
+
+    Un servicio es un programa que se ejecuta en segundo plano (demonio) mientras que un target es una agrupación 
+    de servicios propios de un nivel de ejecución concreto
+
+12. ¿Para qué sirve GRUB? ¿Podemos prescindir de él?
+
+ GRUB es un gestor de arranque cuya función es  cargar el núcleo del sistema operativo 
+ seleccionado en la primera pantalla tras iniciar el sistema y recibir la orden de la BIOS. La única manera de prescindir de él es instalar otro
+ sistema de arranque, ya que sin un sistema de arranque el sistema no puede iniciarse.
