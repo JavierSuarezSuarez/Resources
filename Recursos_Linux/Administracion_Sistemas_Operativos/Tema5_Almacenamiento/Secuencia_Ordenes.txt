@@ -1,0 +1,85 @@
+###################################################Practica 5.1 #########################################
+Tarea 1:
+   fdisk y crear una particion de cada disco de tamaño correpsondiente al propio disco
+   pvcreate /dev/sdb1
+   pvcreate /dev/sdc1
+
+Tarea 2:
+   vgcreate -v VG_ASO /dev/sdb1 /dev/sdc1
+
+Tarea 3:
+    lvcreate -v --size 256M VG_ASO
+
+Tarea 4:
+    mkfs.ext4 -L MEDIA -v /dev/VG_ASO/lvol0
+    mount /dev/VG_ASO/lvol0 /mnt
+    umount /mnt ...
+    cp - /bin /mnt
+    cp - /usr/bin /mnt
+    mount /dev/VG_ASO/lvol0 /mnt en modo solo lectura
+    umount /mnt ...
+Tarea 5:
+    lvextend -v -L +100M (+300M) /dev/VG_ASO/lvol0
+    resize2fs /dev/VG_ASO/lvol0
+
+Tarea 6:
+    lvcreate /dev/VG_ASO lv_backup
+    mkfs.ext4 -b 2048 - N 3000 (-c) -L BACKUP -v /dev/VG_ASO/lv_backup
+    
+Tarea 7:
+    fsck /dev/VG_ASO/lv_backup
+    fsck -a /dev/VG_ASO/lv_backup
+
+Tarea 8:
+    mkdir /var /media
+    mkdir /var/backup
+    configurar fichero /etc/fstab
+
+#################################################Practica 5.2##########################################
+Tarea 1:
+umount /var/media
+tune2fs -c 1 /dev/VG_ASO/lvol0
+mount /var/media
+
+Tarea 2:
+tune2fs -l /dev/VG_ASO/lvol0
+
+Tarea 3:
+umount /var/media
+umount /var/backup
+
+Manipular fichero fstab (Ultimas 2 columnas)
+
+tune2fs -c 5 /dev/VG_ASO/lvol0
+tune2fs -c 5 /dev/VG_ASO/lv_backup
+
+mount /var/media
+mount /var/backup
+
+Tarea 4:
+df -h
+
+Tarea 5:
+du -s /usr
+du -s /var
+
+###############################################Practica 5.3###########################################
+Tarea 1:
+Editar fstab añadiendo a defaults usrquota y grpquota
+Montar sistemas de ficheros
+quotacheck -cvug /dev/VG_ASO/lvol0
+quotacheck -cvug /dev/VG_ASO/lv_backup
+quotaon /dev/VG_ASO/lvol0
+quotaon /dev/VG_ASO/lv_backup
+
+Tarea 2:
+edquota -u prueba  y configurar en el menu
+
+Tarea 3:
+quota -g prueba   y configurar en el menu
+
+Tarea 4:
+
+
+Tarea 5:
+edquota -u prueba  y configurar en el menu
