@@ -1,0 +1,38 @@
+1) Si hacer uso de la orden ps liste el PID de todos los procesos que se están ejecutando 
+en el sistema.
+
+ps -e | tr -s " " | cut -d" " -f1,2
+Sin ps -> ls /proc | grep '^[0-9]'
+
+2) Contamos con un fichero de texto donde cada linea contiene los siguientes campos 
+separados por uno o mas espacios en blanco: nombre, primer apellido, segundo apellido y 
+dni (Pedro Medario Joroba 1234567 ). Calcule cuantas personas tiene como segundo 
+apellido el almacenado en la variable nombre
+
+3) Calcule cuantos ficheros pertenecen al penúltimo usuario declarado en el fichero /etc/passwd.
+
+find / -type f -user $(tail -2 /etc/passwd | head -1 | cut -d":" -f1) 2>/dev/null | wc -l
+
+4) Muestre el identificador del proceso y la orden ejecutada por el mismo de todos los 
+procesos cuyo pid esté comprendido entre 1000 y 2999.
+
+ps -e | tr -s " " ":" | egrep '^:[1-2]{1}[[:digit:]]{3,4}:'
+ps -e | tr " " ":" | grep '^:[12]'
+
+5) Encuentre todos los ficheros bajo el directorio /home mayores de 50Kbytes y que se 
+hayan modificado con posterioridad al 20 de septiembre de 2020
+
+find /home -type f -size +50k -newermt "2020-09-20"
+NOTA (FIND CON OR) -> find /home \( -type f -size +50k -or -newermt "2020-09-20" \)
+
+6) Crear el archivo no_tty con los procesos que no tienen ningún terminal asignado.
+Realiza la entrega de tu respuesta subiendo un único archivo de texto plano (.txt).
+
+ps -e | head -1 > fichero1.txt; ps -e | grep ' ? ' >> fichero1.txt
+ps -e | grep ' ? ' > fichero1.txt
+
+>> -> Une con lo que ya hay. Concantena
+> -> pone en blanco el fichero y escribe. Sobreescribe
+
+
+

@@ -1,0 +1,63 @@
+ls -l 			-> Listado de un directorio con caracteríticas
+ls -a 			-> Listado de un directorio con ocultos
+ls -la 			-> Combinación de los dos anteriores
+ls -ln 			-> muestra los id de grupo y usuario en vez de nombres
+ls -l 1>&2 		-> redirecciona al standard error
+ls -l 2>/dev/null 1>&2 	-> redirecciona del standar error al null y la salida normala stderr
+
+tput reset	 	-> Limpia por completo el terminal
+w 			-> Quien está y que está ejecutando
+who 			-> Quien está dentro del sistema
+whoami 			-> usuario actual
+ps -C bash	 	-> procesos bash actuales
+
+date '+%A %d %B %Y'	-> pone una fecha concreta
+date +%A\ %d\ %B\ %Y 	-> pone una fecha concreta
+date +%d/%m -d"Oct 23" 	-> conversión de formato de fechas
+
+locate 			-> busca cualquier string que cumpla con lo que se indica. para usarlo debemos actualizar la bd del sistema
+
+find / -name *etc* 					-> busca desde el directorio raíz cualquier cosa cuyo nombre incluya etc
+find /dev -type [b, c, f, d, l,] 			-> busca en un fichero los archivos de tipos indicados  
+find /dev -type [b, c, f, d, l,] -name [nombre] 	-> busca en un fichero los archivos de tipos indicados con nombres especificados  
+find /dev -type [b, c, f, d, l,] -name [nombre] -ls 	-> lo mismo pero listando lo anterior
+find /dev -type [b, c, f, d, l,] -maxdepth [N] 		-> anula la busqueda recursiva ejecutando unicamente N veces
+find / -type f -newer <nombre> -ls 			-> busca las instancias más nuevas de un diretorio
+find / -type f -size +10m 				-> busca los ficheros de más de 10 M dentro del directorio raiz
+find / -type f -size -10m 				-> busca los ficheros de menos de 10 M dentro del directorio raiz
+find / -type f -size +5m -size -10m 			-> busca los ficheros entre 5 y 10M
+find / -type f -user luis 				-> busca los ficheros de luis
+find / -type f !-user luis 				-> busca los ficheros que no sean de luis
+find / -type f -group root		 		-> busca los ficheros del grupo root
+find / -type f !-group root 				-> busca los ficheros que no sean del grupo root
+find / -nouser 						-> ficheros que no pertenecen a nadie actualmente
+
+ls -l; cat file; rm dir 	-> ejecuta las ordene sucesivamente.
+ls -l && cat file 		-> ejecuta las ordenes sucesivamente si la primera no falla.
+ls -l || cat file 		-> ejecuta las ordenes sucesivamente, falle o no la primera no falla.
+gedit & 			-> ejecuta en background (permite el uso del shell)
+
+grep <texto> <fichero> 		-> busca aquellas coincidencias que cumplan con el texto
+grep -v <texto> <fichero>	-> busca aquellas coincidencias que no cumplan con el texto
+grep b[ai] 			-> busca aquellas coincidencias que cumplan las opciones del texto
+grep -w <texto> <fichero> 	-> busca palabras (letras, dígitos y signos de puntuacion no separadores)
+grep -c 			-> cuenta las instancias de la palabra indicada
+
+cat <fichero1> <fichero2> 	-> concatena f1 y f2
+cat <f1> <f2> -n 		-> concatena f1 y f2 y los enumera
+cat -E <f1> 			-> concatena f1 y se pone en la última línea
+
+cut -f1,3 passwd -d: 		-> usando ":" de delimitador, recupera los campos 1 y 3
+cut -f1-3 passwd -d: 		-> usando ":" de delimitador, recupera los campos del 1 al 3
+cut -f1,3-5 /etc/passwd -d: 	-> combina los dos anteriores
+cut -c1,3 passwd 		-> recupera los caracteres 1 y 3
+cut -c1-3 passwd 		-> recupera los caracteres del primero al tercero
+cut -c1,3-5 /etc/passwd -d: 	-> combina los dos anteriores
+cut -c1,3-5 /etc/passwd -d: -u 	-> combina los dos anteriores sin repeticiones
+
+sort -k1 -t: passwd 		-> ordena por el primer campo empleando ":" como delimitador
+sort -k1 -t: -n passwd 		-> ordena por el primer campo empleando ":" como delimitador interpretándolo como numero
+sort -k1,2,3 -t: passwd 	-> ordena por los campos 1-3 empleando ":" como delimitador interpretándolo como numero
+
+uniq 				-> elimina repeticiones
+

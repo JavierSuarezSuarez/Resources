@@ -1,0 +1,339 @@
+
+Entro en mi cuenta de usuario. Desde ahí quiero buscar todos los directorios bajo /etc 
+cuyo nombre empiece por la letra «a». Sabemos que esto lo puedo resolver con find de forma sencilla:
+
+$ find /etc -iname a* -type d 2>/dev/null
+O bien así:
+
+$ find /etc -iname "a*" -type d 2>/dev/null
+La única diferencia entre la primera y la segunda forma son las comillas en "a*". 
+Aparentemente las dos formas funcionan bien, pero...
+
+Ahora creo un fichero en mi directorio con nombre "averquepasa":
+
+$ touch averquepasa
+Si a continuación vuelvo a ejecutar la búsqueda con find, solo me funciona con la "a*" entre comillas. 
+Sin comillas deja de funcionar.
+
+Intenta reproducir esta situación. ¿Alguna idea de por qué sucede esto? 
+¿Qué tiene que ver el nuevo fichero con el find y su búsqueda en /etc?
+
+
+Respuesta: El comando falla cuando no tiene comillas debido a lo que se conoce como Shell Expansion. Hay varios tipos y en el propio manual
+del Find (Sección Tests, -name) existe un "disclaimer" que indica
+que se debe encerrar el patrón de búsqueda en comillas para evitar que se produzca la expansión del shell.
+
+
+Mejor Respuesta: Debido a la expansión del asterisco provoca que se quede solo con el fichero
+
+
+
+**********************************************************************************************************************************************************************************
+
+BLOQUE A
+Ejercicio 1: ¿Qué hace la siguiente orden?
+
+date > /tmp/foo.txt ; who >> /tmp/foo.txt
+
+Primero, guarda la fecha actual en un fichero de texto (foo.txt) que se encuentra en el directorio /tmp.
+Tras eso, concatena a este fichero los usuarios que estan actualmente logueados en el sistema
+
+¿Cuál es la diferencia con esta otra orden?
+
+date > /tmp/foo.txt ; who > /tmp/foo.txt
+
+La diferencia es que en el segundo paso (orden who) se trunca el fichero, borrando su contenido
+y a continuación se introduce lo que devuelve who en el fichero.
+
+
+Ejercicio 2: ¿Qué hace la siguiente orden?
+
+ls -lR /boot 2> /tmp/fichA > /tmp/fichB
+
+Lista, mostrando los permisos, propietario y grupo,fecha etc, de forma recursiva (-lR) el contenido del 
+directorio /boot redirigiendo los posibles errores, que se comunican por el canal 2, a un fichero (fichA)
+y guardando el resultado del listado en otro fichero (fichB) ambos en el directorio /tmp
+
+
+Ejercicio 3: Combinando las órdenes head y tail, muestre la sexta línea del fichero /etc/passwd
+
+Órden: head -6 /etc/passwd | tail -1
+
+Ejercicio 4: Contar el número de ficheros del directorio /boot (y sólo /boot, sin recursividad)  
+cuyo nombre contenga una o más letras mayúsculas (pista: grep, wc) 
+
+Órden: ls /boot | grep -e "*[A-Z]+*" -e "[A-Z]+*" -e "*[A-Z]+" | wc -l
+
+Mejor: ls /boot | grep -e "[A-Z]" | wc -l
+
+Otra forma: find /boot -maxdepth 1 -type f | grep "[A-Z]" | wc -l
+
+Otra forma: find /boot -maxdepth 1 -type f -name  '*[A-Z]**' | wc -l
+
+
+Ejercicio 5: Cada usuario del sistema tiene asignado un shell por defecto (último campo del fichero /etc/passwd). 
+Escriba una lista ordenada alfabéticamente de los nombres de usuario (login name) 
+que no usan /bin/bash como shell por defecto (pista: cut, grep, sort)
+
+Orden: grep -v "/bin/bash" /etc/passwd | cut -d: -f1 | sort
+
+
+Ejercicio 6: ¿Qué hace la siguiente orden? Modifíquela para que sea más eficiente
+
+cat /etc/group | sort -t: -k1 | cut -d: -f1,3
+
+Muestra por pantalla el contenido de /etc/group (cat /etc/group) ordenado alfabéticamente por el primer campo
+usando como separador ":" (sort -t: -k1) y filtrando por los campos 1 y 3 usando el mismo separador (cut -d: -f1,3)
+
+Órden Modificada: cut -d: -f1,3 /etc/group | sort -t: k1
+
+Ejercicio 7: Enumere los shells que usan los usuarios de su sistema, sin que haya repeticiones (pista: sort y uniq)
+
+Para obtener una lista enumerada de los shell que usan los usuarios, sin repeticiones y ordenada:
+
+Órden: cut -d: -f7 /etc/passwd | sort | uniq | nl
+
+Otra forma: cut -d: -f7 /etc/passwd | sort -u | nl
+
+CORRECCION:
+4. La orden wc sobra
+5. Hay que asegurarse ademas que /bin/bash no aparezca en cualquier otro campo
+7. La orden uniq sobra
+
+**************************************************************************************************************************************
+
+BLOQUE B ejercicios con find
+
+1. ¿Qué hace la siguiente orden?
+
+find /etc /boot -type f -newer /etc/passwd 
+
+Busca en los directorios /etc y /boot los archivos unicamente (-type f) que hayan sido
+modificados más recientemente que el archivo passwd de /etc
+
+2. Localice todos los archivos que no pertenezcan al usuario root 
+   cuyo tamaño sea mayor que 10 KiB y menor que 50 KiB
+
+Orden: find / -type f -not -user root -size +10k -size -50k 2>/dev/null
+
+              (\!)
+
+3. Calcule la suma md5 de los ficheros de tamaño inferior a 10Kib o superior a 1Mib, 
+   que haya bajo los directorios /bin y /sbin. 
+  El cálculo de la suma md5 típicamente se realiza con la orden «md5sum». 
+
+Orden: find -L /bin /sbin -type f  \( -size -10k -or -size +1M \) 2> /dev/null | md5sum 
+
+4. Localice todos los archivos del directorio /root que tengan permiso de lectura para el grupo propietario, 
+   independientemente del resto de permisos.
+
+Orden: find /root -type f -perm -g+r
+
+5. ¿Qué hace la siguiente orden?
+
+cd ; find . -maxdepth 1 \( -empty -o -newer /etc/passwd \)
+
+Vamos al directorio de usuario (cd) y alli buscamos en ese directorio, con una profundidad de búsqueda de 1 nivel (-maxdepth 1),
+aquellos archivos o directorios vacios o que hayan sido modificados más recientemente que el archivo passwd de /etc
+
+******************************************************************************************************************
+
+BLOQUE B: ejercicios con grep
+
+
+Construye una expresión regular que reconozca direcciones de correo electrónico, ej. hola-mundo@gmail.com
+
+Utiliza el programa grep para que lea líneas de la entrada estándar (o un fichero de texto) y 
+devuelva solamente aquellas cadenas de texto que son direcciones de correo.
+
+En caso de que la necesites, la especificación 
+completa del formato de las direcciones de correo electrónico está en el estándar RFC822 de Internet (apartado 6.1).
+
+Para emails en los que se termina con dominio .com, .es, .org etc.:
+
+Orden: grep -E '\b[A-Za-z0-9+_,\."]*@[A-Za-z0-9+_,\."]*(\.[a-z]{2,4}){0,}\b' emails.txt
+
+Expresión Regular: cualquier_caracter@cualquier_caracter.dominio
+
+1º Propuesta: "[a-zA-Z0-9]\+@[a-zA-Z0-9]\+\.[a-z]\{2,\}"
+
+*******************************************************************************************************************
+
+BLOQUE B: ejercicios con ps
+
+Estos son varios ejercicios que se pueden resolver con la orden ps y, en ciertos casos, 
+combinados con algún filtro estándar.
+
+Entregue sus soluciones respondiendo a este mismo mensaje del foro.
+
+﻿1. Muestre el tiempo transcurrido desde su lanzamiento, 
+   el PID y la orden de todos los procesos que se están ejecutando en el sistema.
+
+Orden: ps -eo etime,pid,cmd
+
+2. Muestre el pid y el propietario de todos los procesos que estén ejecutando el programa bash. 
+   La lista debe estar ordenada por el nombre del propietario.
+
+Orden: ps -eo pid,user,cmd --sort=user | grep "bash"  
+
+3. ¿Qué hace la siguiente orden?
+
+ps -e --forest
+
+Devuelve el árbol de procesos (en formato ASCII) actualmente activos en el sistema 
+4. ¿Qué hace la siguiente orden?
+
+ps -e -opid,ppid,user,pcpu,cputime,cmd --sort=cputime
+
+Devuelve el identificador de proceso, identificador del proceso padre, el porcentaje de uso de CPU,
+el tiempo en CPU y la orden de todos los procesos actualmente activos en el sistema ordenados por el tiempo de CPU
+ 
+5. Localice los 5 procesos que han consumido más CPU hasta el momento.
+
+Orden: ps -e -o pid,cputime,cmd --sort=cputime | tail -5
+
+
+******************************************************************************************************************
+
+Ejercicios con grep
+
+Fichero de texto /usr/share/dict/words. 
+Este es un fichero que encontramos en muchos sistemas Unix y 
+que contiene una lista enorme de palabras del idioma inglés.
+
+Con este fichero, encontrar:
+
+Palabras que empiezan por vocal. Órden: grep -E '^[aeiouAEIOU]' /usr/share/dict/words
+                                             -i
+
+Palabras que tienen exactamente cinco letras. Órden: grep -E -x '[a-zA-Z]{5}' /usr/share/dict/words
+
+
+Palabras que tienen menos de cinco letras. Órden: grep -E -x '[a-zA-Z]{0,4}' /usr/share/dict/words
+
+
+Palabras que empiezan por vocal y terminan en «tion». Órden: grep -E '^[aeiouAEIOU][a-zA-Z]+tion$' /usr/share/dict/words
+
+                                                                                    .*tion$
+
+Palabras que empiezan por vocal, terminan en «tion» y tienen hasta ocho letras. 
+Órden:  grep -E -x '^[aeiouAEIOU][a-zA-Z]{0,3}tion$
+
+
+Palabras que no contienen vocales. Órden: grep -E -v '[aeiouAEIOU]' /usr/share/dict/words
+                                        
+                                          grep -Ei '^[^aeiou]+$' /usr/share/dict/words
+
+Palabras en las que «sh» aparezca al menos dos veces. 
+Órden: grep -E -e '(.sh.){2}' -e '(sh){2}' -e '(sh$){2}' -e '(^sh){2}' /usr/share/dict/words
+
+       grep -Ei "sh.*sh" /usr/share/dict/words
+
+El segundo ejercicio es conseguir una expresión regular que detecte direcciones de correo electrónico, 
+ej. "hola-mundo@buzon.correo.com". 
+
+La especificación detallada de una dirección de correo electrónico es bastante compleja. 
+La puedes encontrar en la Wikipedia en inglés: https://en.wikipedia.org/wiki/Email_address
+
+Órden: grep -E '\b[A-Za-z0-9+_,\."]*@[A-Za-z0-9+_,\."]*(\.[a-z]{2,4}){0,}\b' emails.txt
+
+
+
+**************************************************************************************************************************************************************************************
+Ejercicio avanzado 1:
+Comprima con gzip cada uno de los ficheros mayores de 10 KiB que existan bajo el directorio actual, 
+de manera que cada fichero mayor de 10 KiB sea reemplazado por su versión comprimida
+
+Órden: find . -type f -size +10k -exec gzip {} \;
+
+**************************************************************************************************************************************************************************************
+Ejercicio avanzado 2:
+Obtenga la lista de usuarios que son propietarios de más de un fichero en el directorio /tmp
+
+Cumpla con estos requisitos:
+
+La búsqueda debe considerar los cualquier tipo de ficheros (regulares, dispositivos, directorios, ...).
+
+No haga recorridos recursivos, sólo rastree los elementos que están directamente accesibles desde el directorio /tmp.
+
+El listado no debe mostrar duplicados (un usuario sólo puede aparecer una vez en la lista).
+
+Órden: 
+
+
+**************************************************************************************************************************************************************************************
+Ejercicio avanzado 3:
+Dificultad: media-alta
+
+Obtenga la lista de todos los directorios del sistema que contienen documentos HTML.
+
+Los documentos HTML son aquellos que tienen extensión .htm o .html, sin distinguir mayúsculas.
+
+Órden: find / -name "*.html" -or -name "*.htm" | uniq -> Todos los archivos
+Orden: find / -type f -regextype posix-egrep -regex '.*\.(html|htm)' -exec dirname {} \; | uniq -> Directorios que contienen los archivos
+
+**************************************************************************************************************************************************************************************
+Ejercicio avanzado 4:
+
+Iteración 1. Muestre las rutas todos los ficheros del sistema que midan más de 100MiB y 
+que no hayan sido accedidos en el último mes.
+
+find / -size +100M -and -atime +31                       2>/dev/null
+
+Iteración 2. Elimine todos los ficheros que cumplan con los criterios de la Versión 1.
+
+find / -size +100M -and -atime +31 -delete
+
+Iteración 3. Traslade cada uno de esos ficheros a la carpeta /grandes-sin-usar, 
+cambiando su nombre por fichero.YYYYMMDD, donde fichero es el nombre original 
+y YYYYMMDD es la fecha actual (hoy) en formato año-mes-día. 
+
+find / -size +100M -and -atime +31 -exec mv -t /grandes-sin-usar {} \; | rename '.*' ".*/.$(date "+%Y%m%d")"
+find / -size +100M -atime +30 -execdir mv {} /grandes-sin-usar/{}.$(date + "%Y%m%d")\;
+
+Ejemplo: el fichero penicula.mkv se traslada a /grandes-sin-usar/penicula.mkv.20151012.
+
+Iteración 4 (final). Lo mismo que la versión 3, pero el nombre del fichero trasladado debe ser nombre.YYYYMMDD.extensión, 
+donde nombre es el nombre original del fichero sin su extensión, YYYYMMDD es la fecha de último acceso 
+el fichero y extensión son los últimos caracteres del nombre del fichero, después del carácter «.», si existe.
+
+Ejemplo: penicula.mkv, accedido por última vez el 7/1/2014, se convertirá en penicula.20140107.mkv.
+
+Órden:
+
+
+**************************************************************************************************************************************************************************************
+
+Ejercicios de las fichas
+
+Ejercicios con ps y find
+1. Queremos mostrar el tempo de sistema consumido, el identificador del proceso, y la
+orden ejecutada para todos los procesos que se estén ejecutando en el sistema. El
+listado debe estar ordenado por el tiempo del sistema consumido.
+
+Órden: ps -eo cputime,pid,cmd --sort=cputime
+
+2. Mostrar todos los procesos del root que se están ejecutando pero solo aquellos que se
+han lanzado en una terminal (tty) y ordenados por nombre de terminal.
+
+Órden:
+
+3. Mostrar todos los procesos que se están ejecutando en el sistema que no sean del
+root, con los siguientes atributos: su tamaño VM en bytes, identificador de proceso,
+nombre del usuario y la orden ejecutada.
+
+Órden: ps -eu root --deselect -eo vsize,pid,user,cmd
+
+4. Obtener los archivos del sistema que no sean propiedad del usuario root ni del grupo
+root y cuyos tamaños superen los 1024 KiB.
+
+Órden: find / -not -user root -not -group root -size +1k 2>/dev/null
+
+5. Obtener los archivos del sistema que sean propiedad del usuario luis que sean
+ejecutables cuyos tamaños superen los 1024 KiB.
+
+Órden: find / -user luis -perm /u+x,g+x,o+x -size +1k
+
+6. Listar los archivos de los directorios /bin, /sbin y /usr/bin cuyo permisos sean 777.
+
+Órden: find /bin /sbin /usr/bin
