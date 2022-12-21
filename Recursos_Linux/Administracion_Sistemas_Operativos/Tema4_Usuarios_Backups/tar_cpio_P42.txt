@@ -1,0 +1,30 @@
+Copias de seguridad (Con tar y cpio): Se usa snapshot.txt o snapshotInc.txt como timestamps
+La forma de realizar las copias incrementales y diferenciales usando ficheros de timestamp es una de las posibles formas (podrían haber más)
+
+Completa(Nivel 0)-----------------------------------------------------------------------
+
+Con tar -> find /home -not -user root 2>/dev/null | tar czf /backups/backup-home-completa-$(date +"%Y%m%d").tgz --level=0 -g snapshot.txt -T -
+
+Con cpio -> Sin comprimir: find /home -not -user root 2>/dev/null | cpio -ov > /backupscpio/backup-home-completa-$(date +"%Y%m%d").cpio && touch /backupscpio/snapshot.txt
+
+NO SEGURO de estar correcto(sale esta forma en los apuntes pero no se profundiza mucho)
+Con cpio -> Comprimido:    find /home -not -user root 2>/dev/null | cpio -ov | gzip > /backupscpio/backup-home-completa-$(date +"%Y%m%d").cpio.gz
+
+
+Diferencial(Nivel 1)------------------------------------------------------------------------------------------
+
+Con tar -> find /home -not -user root 2>/dev/null| tar czf /backups/backup-home-nivel1-$(date +"%Y%m%d").tgz --level=1 -g snapshot.txt -T -
+
+Con cpio ->find /home -not -user root -neweram /backupscpio/snapshot.txt 2>/dev/null |cpio -ov > /backupscpio/backup-home-nivel1-$(date +"%Y%m%d").cpio && touch /backupscpio/snapshotInc.txt
+
+
+Incremental(Nivel2)------------------------------------------------------------------------------------------
+
+Con tar -> find /home -not -user root 2>/dev/null | tar czf /backups/backup-home-nivel2-$(date +"%Y%m%d").tgz --level=2 -g snapshot.txt -T -
+
+Con respecto a ultima copia diferencial o incremental
+Con cpio ->find /home -not -user root -neweram /backupscpio/snapshotInc.txt 2>/dev/null | cpio -ov > /backupscpio/backup-home-nivel2-$(date +"%Y%m%d").cpio && touch /backupscpio/snapshotInc.txt
+
+Con respecto a ultima copia completa
+Con cpio ->find /home -not -user root -neweram /backupscpio/snapshot.txt 2>/dev/null | cpio -ov > /backupscpio/backup-home-nivel2-$(date +"%Y%m%d").cpio && touch /backupscpio/snapshotInc.txt
+

@@ -1,0 +1,17 @@
+#!/bin/bash
+backup_dir="/root/practica_4/backups"
+
+
+case $1 in
+	# copia de nivel 0 con cpio (completa)
+	0)	touch $backup_dir/.snapshot.snar
+		find /home -depth -user prueba | cpio -ov | gzip >"$backup_dir/backup0_prueba.gz"
+		find /home -depth -user invitado | cpio -ov | gzip  >"$backup_dir/backup0_invitado.gz"
+		echo "Copia de seguridad de nivel 0 creada";;
+	# copia de nivel 1 con cpio (incremental)
+	1)	find /home -depth -newer "$backup_dir/.snapshot.snar" -user prueba | cpio -ov | gzip >"$backup_dir/backup1_prueba.gz"
+		find /home -depth -newer "$backup_dir/.snapshot.snar" -user invitado | cpio -ov | gzip >"$backup_dir/backup1_invitado.gz"
+		echo "Copia de seguridad de nivel 1 creada";;
+	*)	echo "Error en el script"
+		exit 1;;
+esac
