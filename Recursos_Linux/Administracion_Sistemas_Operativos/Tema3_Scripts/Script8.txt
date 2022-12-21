@@ -1,0 +1,18 @@
+#! /bin/bash
+
+#Script8: Comprobar si los shells de los usuarios (/etc/passwd) se encuentran en /etc/shells
+#Si no es así, se deben añadir a este archivo y mostrarlos en forma de lista por pantalla
+IFS=: #Cambiamos IFS para leer correctamente /etc/passwd
+while read username c2 c3 c4 c5 c6 shell
+do
+    #Si el shell se encuentra dentro del fichero ...
+    if grep -Eq "$shell" ./shells
+    then
+        continue #No se hace nada y se prosigue con la siguiente iteración
+    else
+    #Si no, se escribe en /etc/shells y se muestra por pantalla
+        echo "$shell" >> /etc/shells
+        echo "$shell"
+    fi
+done < /etc/passwd
+exit 0

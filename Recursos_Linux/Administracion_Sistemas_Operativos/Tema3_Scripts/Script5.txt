@@ -1,0 +1,75 @@
+#! /bin/bash
+
+#Script 5: Buscar archivos con extension .doc o .docx y pasar a minúscula sus nombres.Escribir,con el formato ddo, los cambios en /var/log/cambiosDoc
+#Busqueda recursiva a partir de ruta inicial R pasada como argumento. si se omite R, se hace desde #directorio actual
+
+#Control de parametros: Se pueden pasar o 0 o 1 parámetros
+if [[ $# -gt 1 ]]
+then
+    echo "Invocación incorrecta: Demasiados argumentos" 1>&2
+    exit 1
+fi
+
+#Zona de declaración de variables
+#Variables donde almacenar las busquedas del find
+declare  busquedaSinMod=""
+declare  busquedaConMod=""
+#Arrays para la escritura en el archivo /var/log/CambiosDoc
+declare -a arraySinMod
+declare -a arrayConMod
+#Variable para el control de bucles posteriores
+declare i=0
+
+
+#Si se pasa la ruta como argumento ...
+if [[ $# -eq 1 ]]
+then
+    #Realizamos busqueda en directorio pasado como argumento
+    busquedaSinMod=$(find $1 -type f -regextype posix-egrep -iregex ".*(\.doc|\.docx)")
+    busquedaConMod=$(find $1 -type f -regextype posix-egrep -iregex ".*(\.doc|\.docx)" -exec basename {} \;| tr 'A-Z' 'a-z')
+
+elif [[ $# -eq 0 ]]
+then
+#Si no se pasa la ruta como argumento ...
+    #Realizamos busqueda en directorio actual
+    busquedaSinMod=$(find . -type f -regextype posix-egrep -iregex ".*(\.doc|\.docx)")
+    busquedaConMod=$(find . -type f -regextype posix-egrep -iregex ".*(\.doc|\.docx)" -exec basename {} \;| tr 'A-Z' 'a-z')
+fi
+
+
+#Inicializamos arrays con resultados de ambas búsquedas para despues ir imprimiendo en el archivo
+for linea in $busquedaSinMod
+do
+    arraySinMod[i]=$linea
+    (( i=i+1 ))
+done
+i=0 #Reseteo de la i para el siguiente bucle
+for linea in $busquedaConMod
+do
+    arrayConMod[i]=$linea
+    (( i=i+1 ))
+done
+
+
+#Realizamos el cambio de mayúsculas a minúsculas
+declare newfile
+declare route
+for file in $(find $1 -type f -regextype posix-egrep -iregex ".*(\.doc|\.docx)")
+do
+    route=${file%/*}
+    newfile=$(basename $file | tr 'A-Z' 'a-z')
+    mv $file $route/$newfile 2>/dev/null
+done
+
+
+#Por último, recorremos los elementos de uno de los arrays (da igual cual ya que son de mismo tamaño)
+#escribiendo en /var/log/cambiosDoc la fecha en formato RFC-3339 y cada fila original y con el cambio realizado
+i=0 #Reseteo de la i para el siguiente bucle
+declare numelem=$(echo ${#arraySinMod[*]})
+while (( i<numelem ))
+do
+   
+    echo -e "$(date --rfc-3339=seconds)\t${arraySinMod[i]}\t${arrayConMod[i]}" >> /var/log/cambiosDoc
+    (( i=i+1 ))
+done   
+exit 0

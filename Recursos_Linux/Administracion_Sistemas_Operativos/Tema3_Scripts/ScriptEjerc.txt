@@ -1,0 +1,48 @@
+#!/bin/bash
+
+terminate ()
+{
+	echo $1 1>&2
+	exit 1
+}
+
+[[ $# != 2 ]] && terminate "ERROR. Invocación incorrecta: <nombre> [username] [group]"
+
+declare username=$1
+declare group=$2
+
+# Si el grupo existe ...
+declare flag=0
+while IFS=: read c1 resto
+do 	
+	[[ $c1 =~ $username ]] && flag=1;
+	[[ $flag = 1 ]] && break;
+	shift
+done </etc/passwd
+
+[[ $flag = 0 ]] && terminate "ERROR: el usuario $username no existe"
+
+# Y el usuario existe ...
+flag=0
+while IFS=: read c1 resto
+do 
+	[[ $c1 =~ $group ]] && flag=1; 
+	[[ $flag = 1 ]] && break;
+	shift
+done </etc/group
+
+[[ $flag = 0 ]] && terminate "ERROR: el grupo $group no existe"
+
+# Revisar en /etc/groups si dicho usuario está en a lista de dicho grupo
+while IFS=":" read c1 c2 c3 c4
+do 
+	if [[ $c1 = $group ]]; then
+		if [[ $c4 == *"$username"* ]]; then
+			echo "El usuario $username está en el grupo $group" 
+			exit 0
+		fi
+	fi
+	shift
+done < /etc/group
+
+echo "El usuario $username no está en el grupo $group"; exit 0;

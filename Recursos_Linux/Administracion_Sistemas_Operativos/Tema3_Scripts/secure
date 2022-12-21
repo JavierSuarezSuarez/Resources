@@ -1,0 +1,79 @@
+Dec 29 10:00:05 localhost polkitd[623]: Unregistered Authentication Agent for unix-session:1 (system bus name :1.65, object path /org/freedesktop/PolicyKit1/AuthenticationAgent, locale es_ES.UTF-8) (disconnected from bus)
+Dec 29 10:00:05 localhost sshd[1063]: Received signal 15; terminating.
+Dec 29 10:00:32 localhost polkitd[644]: Loading rules from directory /etc/polkit-1/rules.d
+Dec 29 10:00:32 localhost polkitd[644]: Loading rules from directory /usr/share/polkit-1/rules.d
+Dec 29 10:00:32 localhost polkitd[644]: Finished loading, compiling and executing 10 rules
+Dec 29 10:00:32 localhost polkitd[644]: Acquired the name org.freedesktop.PolicyKit1 on the system bus
+Dec 29 10:00:36 localhost sshd[1058]: Server listening on 0.0.0.0 port 22.
+Dec 29 10:00:36 localhost sshd[1058]: Server listening on :: port 22.
+Dec 29 10:00:40 localhost useradd[1675]: failed adding user 'vboxadd', exit code: 9
+Dec 29 10:00:40 localhost useradd[1676]: failed adding user 'vboxadd', exit code: 9
+Dec 29 10:00:47 localhost gdm-launch-environment]: pam_unix(gdm-launch-environment:session): session opened for user gdm by (uid=0)
+Dec 29 10:00:49 localhost polkitd[644]: Registered Authentication Agent for unix-session:c1 (system bus name :1.34 [/usr/bin/gnome-shell], object path /org/freedesktop/PolicyKit1/AuthenticationAgent, locale es_ES.UTF-8)
+Dec 29 10:00:55 localhost unix_chkpwd[2066]: password check failed for user (usuario1)
+Dec 29 10:00:55 localhost gdm-password]: pam_unix(gdm-password:auth): authentication failure; logname= uid=0 euid=0 tty=/dev/tty1 ruser= rhost=  user=usuario1
+Dec 29 10:01:03 localhost gdm-password]: pam_unix(gdm-password:auth): conversation failed
+Dec 29 10:01:03 localhost gdm-password]: pam_unix(gdm-password:auth): auth could not identify password for [usuario1]
+Dec 29 10:01:03 localhost gdm-password]: gkr-pam: no password is available for user
+Dec 29 10:01:09 localhost gdm-password]: pam_unix(gdm-password:session): session opened for user root by (uid=0)
+Dec 29 10:01:11 localhost gdm-launch-environment]: pam_unix(gdm-launch-environment:session): session closed for user gdm
+Dec 29 10:01:12 localhost polkitd[644]: Unregistered Authentication Agent for unix-session:c1 (system bus name :1.34, object path /org/freedesktop/PolicyKit1/AuthenticationAgent, locale es_ES.UTF-8) (disconnected from bus)
+Dec 29 10:01:13 localhost polkitd[644]: Registered Authentication Agent for unix-session:2 (system bus name :1.69 [/usr/bin/gnome-shell], object path /org/freedesktop/PolicyKit1/AuthenticationAgent, locale es_ES.UTF-8)
+Dec 29 12:10:23 localhost su: pam_unix(su:session): session opened for user usuario2 by root(uid=0)
+Dec 29 12:10:31 localhost unix_chkpwd[13771]: password check failed for user (usuario1)
+Dec 29 12:10:31 localhost su: pam_unix(su:auth): authentication failure; logname=root uid=1001 euid=0 tty=pts/1 ruser=usuario2 rhost=  user=usuario1
+Dec 29 12:28:31 localhost su: pam_unix(su:session): session opened for user usuario1 by root(uid=0)
+Dec 29 12:28:36 localhost unix_chkpwd[17605]: password check failed for user (usuario2)
+Dec 29 12:28:36 localhost su: pam_unix(su:auth): authentication failure; logname=root uid=1000 euid=0 tty=pts/2 ruser=usuario1 rhost=  user=usuario2
+Dec 29 12:46:47 localhost su: pam_unix(su:session): session closed for user usuario2
+Dec 29 12:46:51 localhost su: pam_unix(su:session): session closed for user usuario1
+Dec 30 08:43:07 localhost polkitd[625]: Loading rules from directory /etc/polkit-1/rules.d
+Dec 30 08:43:07 localhost polkitd[625]: Loading rules from directory /usr/share/polkit-1/rules.d
+Dec 30 08:43:07 localhost polkitd[625]: Finished loading, compiling and executing 10 rules
+Dec 30 08:43:07 localhost polkitd[625]: Acquired the name org.freedesktop.PolicyKit1 on the system bus
+Dec 30 08:43:11 localhost sshd[1065]: Server listening on 0.0.0.0 port 22.
+Dec 30 08:43:11 localhost sshd[1065]: Server listening on :: port 22.
+Dec 30 08:43:15 localhost useradd[1674]: failed adding user 'vboxadd', exit code: 9
+Dec 30 08:43:15 localhost useradd[1675]: failed adding user 'vboxadd', exit code: 9
+Dec 30 08:43:20 localhost gdm-launch-environment]: pam_unix(gdm-launch-environment:session): session opened for user gdm by (uid=0)
+Dec 30 08:43:21 localhost polkitd[625]: Registered Authentication Agent for unix-session:c1 (system bus name :1.34 [/usr/bin/gnome-shell], object path /org/freedesktop/PolicyKit1/AuthenticationAgent, locale es_ES.UTF-8)
+Dec 30 08:43:54 localhost gdm-password]: pam_unix(gdm-password:session): session opened for user root by (uid=0)
+Dec 30 08:43:57 localhost gdm-launch-environment]: pam_unix(gdm-launch-environment:session): session closed for user gdm
+Dec 30 08:43:57 localhost polkitd[625]: Unregistered Authentication Agent for unix-session:c1 (system bus name :1.34, object path /org/freedesktop/PolicyKit1/AuthenticationAgent, locale es_ES.UTF-8) (disconnected from bus)
+Dec 30 08:43:58 localhost polkitd[625]: Registered Authentication Agent for unix-session:1 (system bus name :1.65 [/usr/bin/gnome-shell], object path /org/freedesktop/PolicyKit1/AuthenticationAgent, locale es_ES.UTF-8)
+Dec 30 10:25:32 localhost gdm-password]: gkr-pam: unlocked login keyring
+Dec 30 10:32:23 localhost su: pam_unix(su:session): session opened for user prueba by root(uid=0)
+Dec 30 10:32:30 localhost unix_chkpwd[23975]: password check failed for user (usuario1)
+Dec 30 10:32:30 localhost su: pam_unix(su:auth): authentication failure; logname=root uid=1002 euid=0 tty=pts/1 ruser=prueba rhost=  user=usuario1
+Dec 30 10:32:38 localhost unix_chkpwd[23984]: password check failed for user (usuario1)
+Dec 30 10:32:38 localhost su: pam_unix(su:auth): authentication failure; logname=root uid=1002 euid=0 tty=pts/1 ruser=prueba rhost=  user=usuario1
+Dec 30 10:32:47 localhost unix_chkpwd[23993]: password check failed for user (usuario1)
+Dec 30 10:32:47 localhost su: pam_unix(su:auth): authentication failure; logname=root uid=1002 euid=0 tty=pts/1 ruser=prueba rhost=  user=usuario1
+Dec 30 10:34:08 localhost su: pam_unix(su:session): session closed for user prueba
+Dec 30 10:34:12 localhost su: pam_unix(su:session): session opened for user prueba by root(uid=0)
+Dec 30 10:34:15 localhost su: pam_unix(su:session): session closed for user prueba
+Dec 30 10:34:20 localhost su: pam_unix(su:session): session opened for user usuario1 by root(uid=0)
+Dec 30 10:34:26 localhost unix_chkpwd[25597]: password check failed for user (prueba)
+Dec 30 10:34:26 localhost su: pam_unix(su:auth): authentication failure; logname=root uid=1000 euid=0 tty=pts/1 ruser=usuario1 rhost=  user=prueba
+Dec 30 10:34:33 localhost unix_chkpwd[25606]: password check failed for user (prueba)
+Dec 30 10:34:33 localhost su: pam_unix(su:auth): authentication failure; logname=root uid=1000 euid=0 tty=pts/1 ruser=usuario1 rhost=  user=prueba
+Dec 30 10:34:40 localhost unix_chkpwd[25615]: password check failed for user (prueba)
+Dec 30 10:34:40 localhost su: pam_unix(su:auth): authentication failure; logname=root uid=1000 euid=0 tty=pts/1 ruser=usuario1 rhost=  user=prueba
+Dec 30 10:38:03 localhost su: pam_unix(su:session): session closed for user usuario1
+Dec 30 10:43:07 localhost polkitd[611]: Loading rules from directory /etc/polkit-1/rules.d
+Dec 30 10:43:07 localhost polkitd[611]: Loading rules from directory /usr/share/polkit-1/rules.d
+Dec 30 10:43:07 localhost polkitd[611]: Finished loading, compiling and executing 10 rules
+Dec 30 10:43:07 localhost polkitd[611]: Acquired the name org.freedesktop.PolicyKit1 on the system bus
+Dec 30 10:43:13 localhost sshd[1098]: Server listening on 0.0.0.0 port 22.
+Dec 30 10:43:13 localhost sshd[1098]: Server listening on :: port 22.
+Dec 30 10:43:15 localhost useradd[1558]: failed adding user 'vboxadd', exit code: 9
+Dec 30 10:43:15 localhost useradd[1566]: failed adding user 'vboxadd', exit code: 9
+Dec 30 10:43:19 localhost gdm-launch-environment]: pam_unix(gdm-launch-environment:session): session opened for user gdm by (uid=0)
+Dec 30 10:43:21 localhost polkitd[611]: Registered Authentication Agent for unix-session:c1 (system bus name :1.34 [/usr/bin/gnome-shell], object path /org/freedesktop/PolicyKit1/AuthenticationAgent, locale es_ES.UTF-8)
+Dec 30 10:43:33 localhost gdm-password]: pam_unix(gdm-password:session): session opened for user root by (uid=0)
+Dec 30 10:43:36 localhost gdm-launch-environment]: pam_unix(gdm-launch-environment:session): session closed for user gdm
+Dec 30 10:43:36 localhost polkitd[611]: Unregistered Authentication Agent for unix-session:c1 (system bus name :1.34, object path /org/freedesktop/PolicyKit1/AuthenticationAgent, locale es_ES.UTF-8) (disconnected from bus)
+Dec 30 10:43:37 localhost polkitd[611]: Registered Authentication Agent for unix-session:1 (system bus name :1.65 [/usr/bin/gnome-shell], object path /org/freedesktop/PolicyKit1/AuthenticationAgent, locale es_ES.UTF-8)
+Dec 30 10:51:04 localhost unix_chkpwd[2975]: password check failed for user (prueba)
+Dec 30 10:51:04 localhost sshd[2973]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=192.168.1.36  user=prueba
+Dec 30 10:51:07 localhost sshd[2973]: Failed password for prueba from 192.168.1.36 port 52743 ssh2

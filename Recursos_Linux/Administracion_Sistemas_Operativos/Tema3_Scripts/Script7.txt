@@ -1,0 +1,59 @@
+#! /bin/bash
+
+#Script7:dadas dos carpetas A y B, mostrar qué archivos están presentes solamente en una de las dos carpetas. Para cada archivo que cumpla esa condición, mostrar su ruta completa . El rastreo de archivos se hará sólo en el primer nivel de profundidad de las carpetas, no se hará recursivamente.Las rutas se pasan como argumentos
+
+#Control de parametros: Se deben pasar las rutas en los argumentos
+if [[ $# -ne 2 ]]
+then
+    echo "Error: Se deben pasar 2 rutas" 1>&2
+    exit 1
+fi
+#Zona de declaracion de variables
+#Variables para busquedas en ambas rutas
+declare busquedaA=$(find $1 -maxdepth 1 -type f)
+declare busquedaB=$(find $2 -maxdepth 1 -type f)
+#Variables para comparar los archivos y sus rutas posteriormente
+declare baseA
+declare pathA
+declare baseB
+declare pathB
+#Si la ruta 1 es de tipo directorio ...
+if [[ -d $1 ]]
+then
+    #Si la ruta 2 es de tipo directorio ...
+    if [[ -d $2 ]]
+    then
+        #Para cada linea en cada busqueda en la ruta correspondiente, separamos ruta y fichero
+        #y comprobamos si no se encuentra en la otra ruta respectivamente, imprimiendo la ruta completa en tal caso
+        for lineaA in $busquedaA
+        do
+            pathA=$(dirname $lineaA)
+            baseA=$(basename $lineaA)
+            if [[ -f "$2/$baseA" ]]
+            then
+                continue
+            else
+                echo "$pathA/$baseA"
+            fi
+        done
+
+        for lineaB in $busquedaB
+        do
+            pathB=$(dirname $lineaB)
+            baseB=$(basename $lineaB)
+            if [[ -f "$1/$baseB" ]]
+            then
+                continue
+            else
+                echo "$pathB/$baseB"
+            fi
+        done
+        exit 0
+    else
+        echo "Error: No existe $2" 1>&2
+        exit 1
+    fi
+else
+    echo "Error: No existe $1" 1>&2
+    exit 2
+fi

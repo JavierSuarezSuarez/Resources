@@ -1,0 +1,87 @@
+En bash solo variables de tipo entero o cadena de caracteres y arrays
+
+declare A #Declaración de variable
+A=1       #Declaración de variable
+A="Hola mundo"  #Declaración de variable
+Si se hace un declare sobre misma variable se sobreescribe
+
+echo $variable -> Ver contenido de una variable
+Var=$(orden) -> Guardar en variable el resultado (CANAL 1 SIN ERRORES (NO CANAL 2) 
+                de una orden
+VAR = $(<Script.bsh) -> Guardar en variable contenido de script (OJO tamaño scripts y variables)
+
+Orden env para ver el ambiente de la sesión. Sus variables se establecen en tres ficheros de configuración
+
+
+ATRIBUTOS BASH
+declare -i var = Declarar variable entera
+declare -l var = minuscula
+declare -a var = vector
+declare -A var = vector asociativo
+declare -r var = read only
+declare -f var = interpretacion como función
+declare -u var = mayuscula
+declare -x var = Variable para exportar
+declare -t var = variable de debug
+
+EXPORTACIÓN
+Las variables se pierden al cerrar sesión
+Ámbito local de script
+Ámbito de sesión
+export A -> Añade A a las variables de ambiente de la sesión ( no otras sesiones)
+
+ATRIBUTOS
+declare D="MI CASA"; declare +/-l D -> Tras creados, no se pueden añadir atributos
+
+Parametros especiales: ? (1,2 (Canales) ultima orden),
+                       $ (PID del bash que me atiende), 
+                       ERRNO (codigo de error de la ultima llamada)
+
+Parámetros Posicionales
+
+$*, $#, $0, $1, $2 ....
+
+Evaluación de expresiones: [[ -n cadena ]] True si es no vacia y False si lo es, .....
+
+Estructuras de Control: if,while, until (while negado), for
+
+ls [am]*[1-9] -> Empieza por a o m, luego le sigue cualquier cosa y acaba por un digito entre 1 y 9
+
+ls .[a-h] -> Empieza por . y luego le sigue algo de la a a la h
+
+OJO CON LOS ESPACIOS DENTRO DE LA EVALUACION DE LAS EXPRESIONES
+
+shopt -s Para ver opciones de funcionamiento del Bash y con -s establecer extglob para activar regex extendidas
+IFS -> Variable de entorno que define el caracter separador de la sesion
+Arrays Indexados declare -a vector  = (lunes martes)
+Arrays Asociativos
+
+while (read linea) -> El () hace que se ejecute en un subshell. CON LOS PIPES TAMBIEN SE GENERA UN SUBSHELL
+
+Un script puede manejar hasta 10 canales ( 0 al 9) orden exec 3<$1 para abrir canal 3 y asignarlo al primer argumento
+Canal de entrada 4 < $1, de salida 4> $1, de e/s 4 <> $1
+
+
+EXPRESIONES REGULARES COMPLEJAS
+$variable = Contenido variable
+${variable} = Limita la expansión a lo que esté dentro de las {}. Se puede usar para incrustar contenido variable
+${#variable} = Longitud de  variable
+${variable:-literal} = Si variable esta definida y su contenido no es nulo, se muestra su contenido, si no se cumple algo o todo  lo anterior, se muestra literal 
+${variable:=literal} = Si variable esta definida pero contenido es nulo, le asigna el valor de literal
+${variable:+literal} = Si variable es nula o no definida, no se hace nada, de lo contrario se sustituye por literal
+${varible:?}, ${variable:?literal} = Pregunta si variable existe, si no existe, devuelve un mensaje estandar de no existencia si quieres mensaje especifico -> ${variable:?literal}
+${variable#patron} : Ve si el contenido de variable concuerda con patron. si concuerda, devuelve valor de variable pero extrayendo la subcadena mas pequeña que concuerda con patron
+${variable##patron} :  Ve si el contenido de variable concuerda con patron. si concuerda, devuelve valor de variable pero extrayendo la subcadena mas grande que concuerda con patron
+${variable%patron}: Lo mismo que ${variable#patron} pero empezando por el final
+${variable%%patron}: Lo mismo que ${variable##patron} pero empezando por el final
+
+
+
+
+
+
+
+
+
+
+

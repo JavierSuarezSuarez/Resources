@@ -1,0 +1,8 @@
+#!/bin/bash
+# Esto es un comentario
+itera=$1
+while (( itera < 5 ))
+do
+    echo "HOLA MUNDO"
+    (( itera = itera + 1 ))
+done

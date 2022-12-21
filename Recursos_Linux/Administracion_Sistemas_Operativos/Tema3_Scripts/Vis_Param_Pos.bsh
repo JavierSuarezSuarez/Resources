@@ -1,0 +1,10 @@
+#!/bin/bash
+#Script que visualiza el funcionamiento de los parametros posicionales de script
+
+echo $*
+while (( $# != 0 ))
+do
+	echo $1
+	echo $*
+        shift
+done
